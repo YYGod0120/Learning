@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    // 普通递归与concat函数的结合
+    let arr = [1,[2,3],[4,5,[6,7,8]],9];
+   
+    function flatten1(arr) {
+        let ans = [];
+        for(let i = 0;i<arr.length;i++){
+            if(typeof arr[i]=="number"){
+                ans.push(arr[i]);
+            }
+            else{
+                ans = ans.concat(flatten1(arr[i]));
+            }
+        }
+        return ans;
+    }
+    console.log(flatten1(arr));
+   
+
+    //reduce函数写法
+    let flatten2 = arr => {
+        
+        return arr.reduce(function(ans,cur){
+            if(typeof cur=="number"){
+                 return ans.concat(cur);
+            }
+            else{
+                return ans.concat(flatten2(cur));
+            }
+        },[])
+        
+    }
+    console.log(flatten2(arr));       
+   
+
+    //toString方法
+    function flatten3(arr){
+        let newArr = arr.toString().split(',');
+        for(let i = 0;i < newArr.length;i++){
+            newArr[i] = Number(newArr[i]);
+            
+        }
+        
+        return newArr;
+        
+    }
+    console.log(flatten3(arr));
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
