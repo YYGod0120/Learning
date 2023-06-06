@@ -1,18 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchCount } from './counterAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchCount } from "./counterAPI";
 
 const initialState = {
   value: 0,
-  status: 'idle',
+  status: "idle",
 };
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched. Thunks are
-// typically used to make async requests.
+// 下面这个函数就是一个 thunk ，它使我们可以执行异步逻辑
+// 你可以 dispatched 异步 action `dispatch(incrementAsync(10))` 就像一个常规的 action
+// 调用 thunk 时接受 `dispatch` 函数作为第一个参数
+// 当异步代码执行完毕时，可以 dispatched actions
 export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
+  "counter/fetchCount",
   async (amount) => {
     const response = await fetchCount(amount);
     // The value we return becomes the `fulfilled` action payload
@@ -21,7 +20,7 @@ export const incrementAsync = createAsyncThunk(
 );
 
 export const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -45,10 +44,10 @@ export const counterSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(incrementAsync.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(incrementAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = "idle";
         state.value += action.payload;
       });
   },
@@ -69,5 +68,7 @@ export const incrementIfOdd = (amount) => (dispatch, getState) => {
     dispatch(incrementByAmount(amount));
   }
 };
-
+// selector 函数允许我们从 state 中获取值
+// Selectors 也可以在使用的地方内联的方式定义
+// 而不是仅仅只能在 slice 文件中。例如 : `useSelector((state) => state.counter.value)`
 export default counterSlice.reducer;
